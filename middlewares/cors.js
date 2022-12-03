@@ -1,6 +1,6 @@
 const allowedCors = [
-  'https://verdant-yucca-front.nomoredomains.icu',
-  'http://verdant-yucca-front.nomoredomains.icu',
+  'https://verdant-yucca.ru',
+  'http://verdant-yucca.ru',
   'http://localhost:3000',
 ];
 
