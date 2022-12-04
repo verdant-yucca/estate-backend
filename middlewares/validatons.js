@@ -1,4 +1,5 @@
 const { celebrate, Joi } = require('celebrate');
+const { vldEstate } = require('../utils/constants');
 
 module.exports.createUserValidation = celebrate({
   body: Joi.object().keys({
@@ -47,13 +48,16 @@ module.exports.estateIdValidation = celebrate({
   }),
 });
 
-module.exports.createCardValidation = celebrate({
+module.exports.createEstateValidation = celebrate({
   body: Joi.object().keys({
-    name: Joi.string().required().min(2).max(30),
-    link: Joi.string().required()
+    title: Joi.string().required().min(vldEstate.minLenTitle).max(vldEstate.maxLenTitle),
+    price: Joi.number().required(),
+    address: Joi.string().required(),
+    image: Joi.string().required()
       .regex(
         /^((http|https):\/\/)?(www\.)?([a-zа-я0-9]{1}[a-zа-я0-9-\\]*\.?)*\.{1}[a-zа-я0-9-]{2,8}(\w-\.~:\/?#\[\]@!$&'\(\)*\+,;=)?/i,
       ),
+    target: Joi.boolean(),
   }),
 });
 

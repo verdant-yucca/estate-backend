@@ -1,6 +1,5 @@
 const router = require('express').Router();
 const usersRouter = require('./users');
-const cardsRouter = require('./cards');
 const estateRouter = require('./estate');
 const { login, createUser } = require('../controllers/users');
 const auth = require('../middlewares/auth');
@@ -14,7 +13,6 @@ router.use(estateRouter);
 
 router.use(auth);
 
-router.use(cardsRouter);
 router.use(usersRouter);
 router.use('/*', () => {
   throw new NotFoundError('Страница по указанному маршруту не найдена');

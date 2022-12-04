@@ -6,17 +6,23 @@ const {
   ERROR_TEXT_NOT_FOUND_USERS,
 } = require('../utils/constants');
 
-module.exports.postEstate = (req, res, next) => {
-  const { title, price, description, photo } = req.body;
-  Estate.create({ title, price, description, photo })
+// title, price, address, image, target
+
+module.exports.createEstate = (req, res, next) => {
+  const {
+    title, price, address, image, target,
+  } = req.body;
+  Estate.create({
+    title, price, address, image, target,
+  })
     .then((estate) => res.send({
       estate: {
         title: estate.title,
         price: estate.price,
-        photo: estate.photo,
-        description: estate.description,
-        _id: estate._id
-      }
+        image: estate.image,
+        address: estate.address,
+        _id: estate._id,
+      },
     }))
     .catch((err) => {
       if (err.name === 'ValidationError') {
@@ -52,10 +58,14 @@ module.exports.getEstate = (req, res, next) => {
 };
 
 module.exports.updateEstate = (req, res, next) => {
-  const { name, description, photo } = req.body;
+  const {
+    title, price, address, image, target,
+  } = req.body;
   Estate.findByIdAndUpdate(
     req.estate._id,
-    { name, description, photo },
+    {
+      title, price, address, image, target,
+    },
     {
       new: true,
       runValidators: true,
@@ -64,7 +74,6 @@ module.exports.updateEstate = (req, res, next) => {
     .then((estate) => {
       if (estate) {
         res.send(estate);
-
       } else {
         throw new NotFoundError(ERROR_TEXT_NOT_FOUND_USERS.message);
       }
@@ -79,7 +88,7 @@ module.exports.updateEstate = (req, res, next) => {
 };
 
 module.exports.deleteEstate = (req, res, next) => {
-   Estate.findByIdAndRemove(req.params.estateId)
+  Estate.findByIdAndRemove(req.params.estateId)
     .then((estate) => {
       res.send({ estate });
     })

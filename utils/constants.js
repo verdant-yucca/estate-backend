@@ -6,3 +6,9 @@ exports.ERROR_TEXT_NOT_FOUND_USERS = { message: 'Данный пользоват
 exports.ERROR_TEXT_NOT_FOUND_CARDS = { message: 'Данная карточка не существует' };
 exports.ERROR_TEXT_INTERNAL_SERVER = { message: 'Ошибка сервера' };
 exports.secretKey = 'salt-salt-salt';
+
+exports.vldEstate = {
+  minLenTitle: 3,
+  maxLenTitle: 50,
+
+};
