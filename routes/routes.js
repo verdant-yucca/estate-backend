@@ -5,11 +5,13 @@ const { login, createUser } = require('../controllers/users');
 const auth = require('../middlewares/auth');
 const { createUserValidation, loginValidation } = require('../middlewares/validatons');
 const NotFoundError = require('../errors/NotFoundError');
+const telegramRouter = require('./telegram');
 
 router.post('/signin', loginValidation, login);
 router.post('/signup', createUserValidation, createUser);
 
 router.use(estateRouter);
+router.use('/transfer', telegramRouter);
 
 router.use(auth);
 

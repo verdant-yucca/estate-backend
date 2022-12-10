@@ -8,8 +8,7 @@ const ConflictError = require('../errors/ConflictError');
 const { NODE_ENV, JWT_SECRET } = process.env;
 
 const {
-  ERROR_TEXT_NOT_FOUND_USERS,
-  ERROR_TEXT_BED_REQUEST,
+  ERROR_NOT_FOUND, ERROR_BED_REQUEST,
   secretKey,
 } = require('../utils/constants');
 
@@ -33,7 +32,7 @@ module.exports.createUser = (req, res, next) => {
         }))
         .catch((err) => {
           if (err.name === 'ValidationError') {
-            next(new BadRequestError(ERROR_TEXT_BED_REQUEST.message));
+            next(new BadRequestError(ERROR_BED_REQUEST.message));
           } else if (err.code === 11000) {
             next(new ConflictError('Пользователь с данным email уже существует'));
           } else {
@@ -58,12 +57,12 @@ module.exports.updateUser = (req, res, next) => {
       if (user) {
         res.send(user);
       } else {
-        throw new NotFoundError(ERROR_TEXT_NOT_FOUND_USERS.message);
+        throw new NotFoundError(ERROR_NOT_FOUND.message);
       }
     })
     .catch((err) => {
       if (err.name === 'ValidationError' || err.name === 'CastError') {
-        next(new BadRequestError(ERROR_TEXT_BED_REQUEST.message));
+        next(new BadRequestError(ERROR_BED_REQUEST.message));
       } else {
         next(err);
       }
@@ -84,12 +83,12 @@ module.exports.updateAvatar = (req, res, next) => {
       if (user) {
         res.send(user);
       } else {
-        throw new NotFoundError(ERROR_TEXT_NOT_FOUND_USERS.message);
+        throw new NotFoundError(ERROR_NOT_FOUND.message);
       }
     })
     .catch((err) => {
       if (err.name === 'ValidationError' || err.name === 'CastError') {
-        next(new BadRequestError(ERROR_TEXT_BED_REQUEST.message));
+        next(new BadRequestError(ERROR_BED_REQUEST.message));
       } else {
         next(err);
       }
@@ -108,12 +107,12 @@ module.exports.getUser = (req, res, next) => {
       if (user) {
         res.send(user);
       } else {
-        throw new NotFoundError(ERROR_TEXT_NOT_FOUND_USERS.message);
+        throw new NotFoundError(ERROR_NOT_FOUND.message);
       }
     })
     .catch((err) => {
       if (err.name === 'CastError') {
-        next(new BadRequestError(ERROR_TEXT_BED_REQUEST.message));
+        next(new BadRequestError(ERROR_BED_REQUEST.message));
       } else {
         next(err);
       }
@@ -136,7 +135,7 @@ module.exports.getMe = (req, res, next) => {
       if (user) {
         res.send(user);
       } else {
-        throw new NotFoundError(ERROR_TEXT_NOT_FOUND_USERS.message);
+        throw new NotFoundError(ERROR_NOT_FOUND.message);
       }
     })
     .catch(next);

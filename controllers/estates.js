@@ -2,8 +2,8 @@ const Estate = require('../models/estate');
 const NotFoundError = require('../errors/NotFoundError');
 const BadRequestError = require('../errors/BadRequestError');
 const {
-  ERROR_TEXT_BED_REQUEST,
-  ERROR_TEXT_NOT_FOUND_USERS,
+  ERROR_BED_REQUEST,
+  ERROR_NOT_FOUND,
 } = require('../utils/constants');
 
 // title, price, address, image, target
@@ -25,8 +25,8 @@ module.exports.createEstate = (req, res, next) => {
       },
     }))
     .catch((err) => {
-      if (err.name === 'ValidationError') {
-        next(new BadRequestError(ERROR_TEXT_BED_REQUEST.message));
+      if (err.code === ERROR_BED_REQUEST.code) {
+        next(new BadRequestError(ERROR_BED_REQUEST.message));
       } else {
         next(err);
       }
@@ -45,12 +45,12 @@ module.exports.getEstate = (req, res, next) => {
       if (estate) {
         res.send(estate);
       } else {
-        throw new NotFoundError(ERROR_TEXT_NOT_FOUND_USERS.message);
+        throw new NotFoundError(ERROR_NOT_FOUND.messageEstate);
       }
     })
     .catch((err) => {
-      if (err.name === 'CastError') {
-        next(new BadRequestError(ERROR_TEXT_BED_REQUEST.message));
+      if (err.code === ERROR_BED_REQUEST.code) {
+        next(new BadRequestError(ERROR_BED_REQUEST.message));
       } else {
         next(err);
       }
@@ -75,12 +75,12 @@ module.exports.updateEstate = (req, res, next) => {
       if (estate) {
         res.send(estate);
       } else {
-        throw new NotFoundError(ERROR_TEXT_NOT_FOUND_USERS.message);
+        throw new NotFoundError(ERROR_NOT_FOUND.messageEstate);
       }
     })
     .catch((err) => {
-      if (err.name === 'ValidationError' || err.name === 'CastError') {
-        next(new BadRequestError(ERROR_TEXT_BED_REQUEST.message));
+      if (err.code === ERROR_BED_REQUEST.code) {
+        next(new BadRequestError(ERROR_BED_REQUEST.message));
       } else {
         next(err);
       }
@@ -94,7 +94,7 @@ module.exports.deleteEstate = (req, res, next) => {
     })
     .catch((err) => {
       if (err.name === 'CastError') {
-        next(new BadRequestError(ERROR_TEXT_BED_REQUEST.message));
+        next(new BadRequestError(ERROR_BED_REQUEST.message));
       } else {
         next(err);
       }
