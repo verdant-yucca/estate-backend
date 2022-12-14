@@ -13,14 +13,14 @@ module.exports.sendTlgMessage = (req, res, next) => {
     "<b>Телефон: </b>" + phoneNumber,
     "<b>Сообщение: </b>" + message,
   ];
-  let messagetlg = "";
+  let messageTlg = "";
   msg.forEach(msg => {
-    messagetlg += msg + '\n';
+    messageTlg += msg + '\n';
   })
 
-  messagetlg = encodeURI(messagetlg);
+  messageTlg = encodeURI(messageTlg);
 
-  http.post(`${baseUrlTelegramAPI}${telegramToken}/sendMessage?chat_id=${telegramChatID}&parse_mode=html&text=${messagetlg}`, function (error, response, body) {
+  http.post(`${baseUrlTelegramAPI}${telegramToken}/sendMessage?chat_id=${telegramChatID}&parse_mode=html&text=${messageTlg}`, function (error, response, body) {
     if (response.statusCode === 200) {
       res.status(200).json({status: 'ok', message: 'Успешно отправлено!'});
     } else if (response.statusCode === ERROR_BED_REQUEST.code) {

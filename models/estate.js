@@ -16,14 +16,7 @@ const estateSchema = new mongoose.Schema({
     type: String,
     required: true,
   },
-  image: {
-    type: String,
-    required: true,
-    validate: {
-      validator: (v) => isURL(v),
-      message: 'Некорректная ссылка',
-    },
-  },
+  images: [],
   target: {
     type: Boolean,
   },

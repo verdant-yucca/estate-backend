@@ -10,8 +10,8 @@ const {
   updateEstate,
   deleteEstate,
 } = require('../controllers/estates');
-
-estateRouter.post('/estate', createEstateValidation, createEstate);
+//createEstateValidation
+estateRouter.post('/estate', createEstate);
 estateRouter.get('/estate', getEstates);
 estateRouter.get('/estate/:estateId', estateIdValidation, getEstate);
 estateRouter.patch('/estate', updateEstate);

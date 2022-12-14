@@ -1,4 +1,6 @@
 const Estate = require('../models/estate');
+const fs = require('fs');
+const path = require('path');
 const NotFoundError = require('../errors/NotFoundError');
 const BadRequestError = require('../errors/BadRequestError');
 const {
@@ -10,16 +12,71 @@ const {
 
 module.exports.createEstate = (req, res, next) => {
   const {
-    title, price, address, image, target,
+    title, price, address, target,
   } = req.body;
+  // проверка запроса на наличие файлов и наименование ключей
+  if (!req.files || Object.keys(req.files).length === 0) {
+    return res.status(400).send('No files were uploaded.');
+  }
+  let ress = 0;
+  const imgList = ['.png','.jpg','.jpeg','.gif'];
+  const targetFile = req.files.images;
+  let images = [];
+
+  targetFile.forEach(item=>{
+    let extName = path.extname(item.name);
+
+    // Checking the file type
+    if(!imgList.includes(extName)){
+      fs.unlinkSync(item.tempFilePath);
+      return res.status(422).send("Invalid Image");
+    }
+
+    // Checking file size
+    if(item.size > 90048576){
+      // TODO: закодить сжатие больших файлов
+      fs.unlinkSync(item.tempFilePath);
+      return res.status(413).send("File is too Large");
+    }
+
+    images.push(path.join(__dirname, '..', 'public','images','estates', item.md5+extName));
+  })
+
+  targetFile.forEach(item=>{
+    let extName = path.extname(item.name);
+    let uploadFile = path.join(__dirname, '..', 'public','images','estates', item.md5+extName);
+
+    // Checking the file type
+    if(!imgList.includes(extName)){
+      fs.unlinkSync(item.tempFilePath);
+      return res.status(422).send("Invalid Image");
+    }
+
+    // Checking file size
+    if(item.size > 90048576){
+      // TODO: закодить сжатие больших файлов
+      fs.unlinkSync(item.tempFilePath);
+      return res.status(413).send("File is too Large");
+    }
+
+    // Сохраняем файл
+    item.mv(uploadFile, (err) => {
+      if (err)
+        return res.status(500).send(err);
+    });
+
+  })
+
+
+
   Estate.create({
-    title, price, address, image, target,
+    title, price, address, images, target,
   })
     .then((estate) => res.send({
       estate: {
         title: estate.title,
         price: estate.price,
-        image: estate.image,
+        images: estate.images,
         address: estate.address,
         _id: estate._id,
       },
