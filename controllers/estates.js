@@ -18,7 +18,6 @@ module.exports.createEstate = (req, res, next) => {
   if (!req.files || Object.keys(req.files).length === 0) {
     return res.status(400).send('No files were uploaded.');
   }
-  let ress = 0;
   const imgList = ['.png','.jpg','.jpeg','.gif'];
   const targetFile = req.files.images;
   let images = [];
