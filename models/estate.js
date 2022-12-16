@@ -1,5 +1,4 @@
 const mongoose = require('mongoose');
-const isURL = require('validator/lib/isURL');
 
 const estateSchema = new mongoose.Schema({
   title: {
@@ -17,6 +16,7 @@ const estateSchema = new mongoose.Schema({
     required: true,
   },
   images: [],
+  coords: [],
   target: {
     type: Boolean,
   },

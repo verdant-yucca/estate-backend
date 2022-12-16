@@ -5,10 +5,8 @@ const NotFoundError = require('../errors/NotFoundError');
 const BadRequestError = require('../errors/BadRequestError');
 const {
   ERROR_BED_REQUEST,
-  ERROR_NOT_FOUND,
+  ERROR_NOT_FOUND, options, url, imgList
 } = require('../utils/constants');
-
-// title, price, address, image, target
 
 module.exports.createEstate = (req, res, next) => {
   const {
@@ -18,75 +16,62 @@ module.exports.createEstate = (req, res, next) => {
   if (!req.files || Object.keys(req.files).length === 0) {
     return res.status(400).send('No files were uploaded.');
   }
-  const imgList = ['.png','.jpg','.jpeg','.gif'];
   const targetFile = req.files.images;
   let images = [];
-
-  targetFile.forEach(item=>{
-    let extName = path.extname(item.name);
-
-    // Checking the file type
-    if(!imgList.includes(extName)){
-      fs.unlinkSync(item.tempFilePath);
-      return res.status(422).send("Invalid Image");
-    }
-
-    // Checking file size
-    if(item.size > 90048576){
-      // TODO: закодить сжатие больших файлов
-      fs.unlinkSync(item.tempFilePath);
-      return res.status(413).send("File is too Large");
-    }
-
-    images.push(path.join(__dirname, '..', 'public','images','estates', item.md5+extName));
-  })
-
+  // TODO: починить загрузку одного файла
   targetFile.forEach(item=>{
     let extName = path.extname(item.name);
     let uploadFile = path.join(__dirname, '..', 'public','images','estates', item.md5+extName);
 
-    // Checking the file type
     if(!imgList.includes(extName)){
       fs.unlinkSync(item.tempFilePath);
-      return res.status(422).send("Invalid Image");
+      next(res.status(422).send("Invalid Image"));
     }
 
     // Checking file size
     if(item.size > 90048576){
       // TODO: закодить сжатие больших файлов
       fs.unlinkSync(item.tempFilePath);
-      return res.status(413).send("File is too Large");
+      next(res.status(413).send("File is too Large"));
     }
+
+    images.push(path.join(__dirname, '..', 'public','images','estates', item.md5+extName));
 
     // Сохраняем файл
     item.mv(uploadFile, (err) => {
       if (err)
         return res.status(500).send(err);
+
+      const opt = options(address);
+      let coords = [];
+      fetch(url, opt)
+        .then(response => response.json())
+        .then(result => {
+          coords = [...coords, result[0].geo_lat, result[0].geo_lon];
+          Estate.create({
+            title, price, address, images, coords, target,
+          })
+            .then((estate) => res.send({
+              estate: {
+                title: estate.title,
+                price: estate.price,
+                images: estate.images,
+                coords: estate.coords,
+                address: estate.address,
+                _id: estate._id,
+              },
+            }))
+            .catch((err) => {
+              if (err.code === ERROR_BED_REQUEST.code) {
+                next(new BadRequestError(ERROR_BED_REQUEST.message));
+              } else {
+                next(err);
+              }
+            });
+        })
+        .catch(error => console.log("error", error));
     });
-
   })
-
-
-
-  Estate.create({
-    title, price, address, images, target,
-  })
-    .then((estate) => res.send({
-      estate: {
-        title: estate.title,
-        price: estate.price,
-        images: estate.images,
-        address: estate.address,
-        _id: estate._id,
-      },
-    }))
-    .catch((err) => {
-      if (err.code === ERROR_BED_REQUEST.code) {
-        next(new BadRequestError(ERROR_BED_REQUEST.message));
-      } else {
-        next(err);
-      }
-    });
 };
 
 module.exports.getEstates = (req, res, next) => {

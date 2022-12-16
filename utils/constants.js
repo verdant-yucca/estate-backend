@@ -1,3 +1,4 @@
+const {kladrToken, kladrKey} = process.env;
 exports.ERROR_BED_REQUEST = {
   code: 400,
   message: 'Переданы некорректные данные',
@@ -22,3 +23,18 @@ exports.vldEstate = {
   maxLenTitle: 50,
 
 };
+exports.url = "https://cleaner.dadata.ru/api/v1/clean/address";
+//let query = "мск сухонска 11/-89";
+
+exports.options = (address) => {return {
+  method: "POST",
+  mode: "cors",
+  headers: {
+    "Content-Type": "application/json",
+    "Authorization": "Token " + kladrToken,
+    "X-Secret": kladrKey
+  },
+  body: JSON.stringify([address])}
+}
+
+exports.imgList = ['.png','.jpg','.jpeg','.gif'];
