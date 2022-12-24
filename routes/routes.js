@@ -12,7 +12,7 @@ router.post('/signup', createUserValidation, createUser);
 
 router.use(estateRouter);
 router.use('/transfer', telegramRouter);
-router.use('/compressImages', compressImagesRouter);
+//router.use('/compressImages', compressImagesRouter);
 
 router.use(auth);
 

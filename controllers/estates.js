@@ -1,12 +1,13 @@
 const Estate = require('../models/estate');
-const fs = require('fs');
 const path = require('path');
 const NotFoundError = require('../errors/NotFoundError');
 const BadRequestError = require('../errors/BadRequestError');
 const {
   ERROR_BED_REQUEST,
-  ERROR_NOT_FOUND, options, url, imgList
+  ERROR_NOT_FOUND
 } = require('../utils/constants');
+const {cladr} = require("../utils/cladr");
+const {moveFiles} = require("../utils/moveFiles");
 
 module.exports.createEstate = (req, res, next) => {
   const {
@@ -16,62 +17,38 @@ module.exports.createEstate = (req, res, next) => {
   if (!req.files || Object.keys(req.files).length === 0) {
     return res.status(400).send('No files were uploaded.');
   }
-  const targetFile = req.files.images;
-  let images = [];
-  // TODO: починить загрузку одного файла
-  targetFile.forEach(item=>{
-    let extName = path.extname(item.name);
-    let uploadFile = path.join(__dirname, '..', 'public','images','estates', item.md5+extName);
+  const pathDir = path.join(__dirname, '..', 'public','images','estates', 'uncompressed');
+  const moveFilesResult = moveFiles(req.files.images, pathDir);
+  if (moveFilesResult.error.length>0){
+    res.status(moveFilesResult.error[0]).send(moveFilesResult.error[1]);
+  } else {
+    var images = moveFilesResult.images;
+    Estate.create({
+      title, price, address, images, target,
+    })
+      .then((estate) => {
+        res.send({
+          estate: {
+            title: estate.title,
+            price: estate.price,
+            images: estate.images,
+            coords: estate.coords,
+            address: estate.address,
+            _id: estate._id,
+          },
+        });
+        cladr(estate._id, address);
 
-    if(!imgList.includes(extName)){
-      fs.unlinkSync(item.tempFilePath);
-      next(res.status(422).send("Invalid Image"));
-    }
+      })
+      .catch((err) => {
+        if (err.code === ERROR_BED_REQUEST.code) {
+          next(new BadRequestError(ERROR_BED_REQUEST.message));
+        } else {
+          next(err);
+        }
+      });
+  }
 
-    // Checking file size
-    if(item.size > 90048576){
-      // TODO: закодить сжатие больших файлов
-      fs.unlinkSync(item.tempFilePath);
-      next(res.status(413).send("File is too Large"));
-    }
-
-    images.push(path.join(__dirname, '..', 'public','images','estates', item.md5+extName));
-
-    // Сохраняем файл
-    item.mv(uploadFile, (err) => {
-      if (err)
-        return res.status(500).send(err);
-
-      const opt = options(address);
-      let coords = [];
-      fetch(url, opt)
-        .then(response => response.json())
-        .then(result => {
-          coords = [...coords, result[0].geo_lat, result[0].geo_lon];
-          Estate.create({
-            title, price, address, images, coords, target,
-          })
-            .then((estate) => res.send({
-              estate: {
-                title: estate.title,
-                price: estate.price,
-                images: estate.images,
-                coords: estate.coords,
-                address: estate.address,
-                _id: estate._id,
-              },
-            }))
-            .catch((err) => {
-              if (err.code === ERROR_BED_REQUEST.code) {
-                next(new BadRequestError(ERROR_BED_REQUEST.message));
-              } else {
-                next(err);
-              }
-            });
-        })
-        .catch(error => console.log("error", error));
-    });
-  })
 };
 
 module.exports.getEstates = (req, res, next) => {
