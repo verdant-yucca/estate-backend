@@ -15,6 +15,10 @@ const estateSchema = new mongoose.Schema({
     type: String,
     required: true,
   },
+  createDate: {
+    type: Date,
+    default: Date.now
+  },
   images: [],
   coords: [],
   target: {
