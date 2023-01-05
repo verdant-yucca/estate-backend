@@ -1,3 +1,4 @@
+const path = require("path");
 const {kladrToken, kladrKey} = process.env;
 exports.ERROR_BED_REQUEST = {
   code: 400,
@@ -38,3 +39,7 @@ exports.options = (address) => {return {
 }
 
 exports.imgList = ['.png','.jpg','.jpeg','.gif'];
+
+exports.baseUrlImageEstate = path.join('public','images','estates', 'uncompressed');
+
+exports.buildUrlImageEstate = path.join('public','images','estates', 'compressed');

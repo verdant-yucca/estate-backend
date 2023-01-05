@@ -6,13 +6,14 @@ const auth = require('../middlewares/auth');
 const { createUserValidation, loginValidation } = require('../middlewares/validatons');
 const NotFoundError = require('../errors/NotFoundError');
 const telegramRouter = require('./telegram');
+const {compressImagesRouter} = require("../controllers/compressImages");
 
 router.post('/signin', loginValidation, login);
 router.post('/signup', createUserValidation, createUser);
 
 router.use(estateRouter);
 router.use('/transfer', telegramRouter);
-//router.use('/compressImages', compressImagesRouter);
+router.use('/compressImages', compressImagesRouter);
 
 router.use(auth);
 
