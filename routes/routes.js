@@ -7,6 +7,8 @@ const { createUserValidation, loginValidation } = require('../middlewares/valida
 const NotFoundError = require('../errors/NotFoundError');
 const telegramRouter = require('./telegram');
 const {compressImagesRouter} = require("../controllers/compressImages");
+const express = require("express");
+const {buildUrlImageEstate} = require("../utils/constants");
 
 router.post('/signin', loginValidation, login);
 router.post('/signup', createUserValidation, createUser);
@@ -14,6 +16,8 @@ router.post('/signup', createUserValidation, createUser);
 router.use(estateRouter);
 router.use('/transfer', telegramRouter);
 router.use('/compressImages', compressImagesRouter);
+
+router.use('/images', express.static(buildUrlImageEstate))
 
 router.use(auth);
 

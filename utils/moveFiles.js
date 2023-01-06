@@ -13,7 +13,8 @@ module.exports.moveFiles = (files, outDir) => {
   //if (typeof files === "array") {
     files.forEach(item=>{
       let extName = path.extname(item.name);
-      let uploadFile = path.join(outDir, item.md5+extName);
+      let uploadFile = item.md5+extName;
+
 
       if(!imgList.includes(extName)){
         fs.unlinkSync(item.tempFilePath);
@@ -31,7 +32,7 @@ module.exports.moveFiles = (files, outDir) => {
       result.images.push(uploadFile);
 
       // Сохраняем файл
-      item.mv(uploadFile, (err) => {
+      item.mv(path.join(outDir, uploadFile), (err) => {
         if (err) {
           result.error.push([500, err]);
           return result;

@@ -9,14 +9,12 @@ const cors = require('./middlewares/cors');
 const centralizedError = require('./middlewares/centralizedError');
 const { requestLogger, errorLogger } = require('./middlewares/logger');
 const router = require('./routes/routes');
-const {buildUrlImageEstate, baseUrlImageEstate} = require("./utils/constants");
 
 const { PORT = 3000 } = process.env;
 const app = express();
 
 mongoose.connect('mongodb://127.0.0.1:27017/estate'); // localhost || 127.0.0.1
 
-app.use('/public/images/estates/uncompressed/', express.static(baseUrlImageEstate))
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: true }));
 app.use(requestLogger);
