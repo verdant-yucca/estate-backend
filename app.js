@@ -3,7 +3,6 @@ const express = require('express');
 const mongoose = require('mongoose');
 const { errors } = require('celebrate');
 const fileUpload = require('express-fileupload');
-const path = require('path');
 const bodyParser = require('body-parser');
 const cors = require('./middlewares/cors');
 const centralizedError = require('./middlewares/centralizedError');
@@ -21,7 +20,7 @@ app.use(requestLogger);
 app.use(cors);
 app.use(fileUpload({
   useTempFiles : true,
-  tempFileDir : path.join(__dirname,'tmp'),
+  tempFileDir : 'tmp',
 }));
 
 app.use(router);

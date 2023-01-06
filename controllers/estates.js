@@ -1,13 +1,14 @@
 const Estate = require('../models/estate');
-const path = require('path');
+// const path = require('path');
 const NotFoundError = require('../errors/NotFoundError');
 const BadRequestError = require('../errors/BadRequestError');
 const {
   ERROR_BED_REQUEST,
-  ERROR_NOT_FOUND, baseUrlImageEstate
+  ERROR_NOT_FOUND, baseUrlImageEstate, dirUncompressedImages, dirCompressedImages
 } = require('../utils/constants');
 const {cladr} = require("../utils/cladr");
 const {moveFiles} = require("../utils/moveFiles");
+const {compressImages} = require("../utils/imageUtils");
 
 module.exports.createEstate = (req, res, next) => {
   const {
@@ -21,7 +22,7 @@ module.exports.createEstate = (req, res, next) => {
   if (moveFilesResult.error.length>0){
     res.status(moveFilesResult.error[0]).send(moveFilesResult.error[1]);
   } else {
-    var images = moveFilesResult.images;
+    const images = moveFilesResult.images;
     Estate.create({
       title, price, address, images, target,
     })
@@ -37,7 +38,8 @@ module.exports.createEstate = (req, res, next) => {
           },
         });
         cladr(estate._id, address);
-
+        let dirUncompressedImages = 'public/images/estates/uncompressed/*.{jpg,JPG,jpeg,JPEG}'
+        compressImages(dirUncompressedImages,dirCompressedImages,true);
       })
       .catch((err) => {
         if (err.code === ERROR_BED_REQUEST.code) {
@@ -47,7 +49,6 @@ module.exports.createEstate = (req, res, next) => {
         }
       });
   }
-
 };
 
 module.exports.getEstates = (req, res, next) => {

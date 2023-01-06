@@ -14,6 +14,7 @@ module.exports.moveFiles = (files, outDir) => {
     files.forEach(item=>{
       let extName = path.extname(item.name);
       let uploadFile = item.md5+extName;
+      let fileName = item.md5;
 
 
       if(!imgList.includes(extName)){
@@ -29,7 +30,7 @@ module.exports.moveFiles = (files, outDir) => {
         result.error.push([413, "File is too Large"]);
         return result
       }
-      result.images.push(uploadFile);
+      result.images.push(fileName+'.webp');
 
       // Сохраняем файл
       item.mv(path.join(outDir, uploadFile), (err) => {
