@@ -4,7 +4,7 @@ const NotFoundError = require('../errors/NotFoundError');
 const BadRequestError = require('../errors/BadRequestError');
 const {
   ERROR_BED_REQUEST,
-  ERROR_NOT_FOUND, baseUrlImageEstate, dirUncompressedImages, dirCompressedImages
+  ERROR_NOT_FOUND, baseUrlImageEstate, dirCompressedImages
 } = require('../utils/constants');
 const {cladr} = require("../utils/cladr");
 const {moveFiles} = require("../utils/moveFiles");
@@ -19,10 +19,10 @@ module.exports.createEstate = (req, res, next) => {
     return res.status(400).send('No files were uploaded.');
   }
   const moveFilesResult = moveFiles(req.files.images, baseUrlImageEstate);
-  if (moveFilesResult.error.length>0){
-    res.status(moveFilesResult.error[0]).send(moveFilesResult.error[1]);
+  if (moveFilesResult[0] !== 200){
+    res.status(moveFilesResult[0]).send(moveFilesResult[1]);
   } else {
-    const images = moveFilesResult.images;
+    const images = moveFilesResult[1];
     Estate.create({
       title, price, address, images, target,
     })
