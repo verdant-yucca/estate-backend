@@ -1,4 +1,4 @@
-const mongoose = require('mongoose');
+const {mongoose} = require('mongoose');
 
 const estateSchema = new mongoose.Schema({
   title: {
@@ -20,6 +20,10 @@ const estateSchema = new mongoose.Schema({
     default: Date.now
   },
   images: [],
+  views: {
+    type: [],
+    unique: true,
+  },
   coords: [],
   target: {
     type: Boolean,

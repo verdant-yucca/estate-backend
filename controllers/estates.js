@@ -58,7 +58,8 @@ module.exports.getEstates = (req, res, next) => {
 };
 
 module.exports.getEstate = (req, res, next) => {
-  Estate.findById(req.params.estateId)
+  const views = req.headers["x-forwarded-for"];
+  Estate.findByIdAndUpdate(req.params.estateId, {views} )
     .then((estate) => {
       if (estate) {
         res.send(estate);
