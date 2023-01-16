@@ -52,17 +52,34 @@ module.exports.createEstate = (req, res, next) => {
 };
 
 module.exports.getEstates = (req, res, next) => {
-  Estate.find({})
+  let query = {};
+  // if (req.params) {
+  //   let str = req.params.1 + req.params.1 + req.params.1 + req.params.1;
+  // }
+  Estate.find(query)
     .then((estates) => res.send(estates))
     .catch(next);
 };
 
 module.exports.getEstate = (req, res, next) => {
-  const views = req.headers["x-forwarded-for"];
-  Estate.findByIdAndUpdate(req.params.estateId, {views} )
+  Estate.findById(req.params.estateId)
     .then((estate) => {
       if (estate) {
-        res.send(estate);
+        let isContains = false;
+        const viewsEstate = estate['views'];
+        const clientIP = req.headers["x-forwarded-for"];
+
+
+        res.send(estate['views']);
+
+        if (viewsEstate.length > 0) {
+          viewsEstate.forEach(item => (item === clientIP) ? (isContains = true) : false);
+        }
+        if (!isContains) {
+          Estate.findByIdAndUpdate(req.params.estateId, {$push: {views: clientIP }})
+            .then(estate => console.log(estate['views']))
+            .catch((err) =>console.log(err))
+        }
       } else {
         throw new NotFoundError(ERROR_NOT_FOUND.messageEstate);
       }
