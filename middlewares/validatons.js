@@ -48,6 +48,12 @@ module.exports.estateIdValidation = celebrate({
   }),
 });
 
+module.exports.contentIdValidation = celebrate({
+  params: Joi.object().keys({
+    contentId: Joi.string().required().length(24).hex(),
+  }),
+});
+
 module.exports.createEstateValidation = celebrate({
   body: Joi.object().keys({
     title: Joi.string().required().min(vldEstate.minLenTitle).max(vldEstate.maxLenTitle),

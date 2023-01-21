@@ -23,8 +23,9 @@ module.exports.createEstate = (req, res, next) => {
     res.status(moveFilesResult[0]).send(moveFilesResult[1]);
   } else {
     const images = moveFilesResult[1];
+    const createDate = Date.now();
     Estate.create({
-      title, price, address, images, target,
+      title, price, address, images, target, createDate
     })
       .then((estate) => {
         res.send({
@@ -32,8 +33,9 @@ module.exports.createEstate = (req, res, next) => {
             title: estate.title,
             price: estate.price,
             images: estate.images,
-            coords: estate.coords,
+            views: estate.views.length(),
             address: estate.address,
+            createDate: estate.createDate,
             _id: estate._id,
           },
         });
@@ -57,7 +59,17 @@ module.exports.getEstates = (req, res, next) => {
   //   let str = req.params.1 + req.params.1 + req.params.1 + req.params.1;
   // }
   Estate.find(query)
-    .then((estates) => res.send(estates))
+    .then((estates) => res.send({
+      estate: {
+        title: estates.title,
+        price: estates.price,
+        views: estates.views.length(),
+        images: estates.images,
+        address: estates.address,
+        createDate: estates.createDate,
+        _id: estates._id,
+      },
+    }))
     .catch(next);
 };
 

@@ -11,6 +11,7 @@ exports.ERROR_NOT_FOUND = {
   messageUser: 'Данный пользователь не существует',
   messageEstate: 'Объект недвижимости не существует',
   messageTelegram: 'Токен бота прострочен или не существует',
+  messageContent: 'Данного контента не существует'
 };
 exports.ERROR_INTERNAL_SERVER = {
   code: 500,
