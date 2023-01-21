@@ -20,10 +20,7 @@ const estateSchema = new mongoose.Schema({
     default: Date.now
   },
   images: [],
-  views: {
-    type: [],
-    unique: true,
-  },
+  views: [],
   coords: [],
   target: {
     type: Boolean,

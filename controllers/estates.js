@@ -78,7 +78,7 @@ module.exports.getEstate = (req, res, next) => {
         if (!isContains) {
           Estate.findByIdAndUpdate(req.params.estateId, {$push: {views: clientIP }})
             .then(estate => console.log(estate['views']))
-            .catch((err) =>console.log(err))
+            .catch(next)
         }
       } else {
         throw new NotFoundError(ERROR_NOT_FOUND.messageEstate);
