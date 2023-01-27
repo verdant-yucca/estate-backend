@@ -1,13 +1,9 @@
 const compress_images = require('compress-images');
 const fs = require("fs");
-const {unli} = require("fs");
-const {options} = require("./constants");
 
 module.exports.compressImages = (inDir, outDir, deletedSourcesFiles) => {
-  //TODO: написать код, принимающий картинки с baseUrlImageEstate, после сжатия сохраняющий в buildUrlImageEstate и переписывающий
+  if (!fs.existsSync(outDir)) fs.mkdirSync(outDir, {recursive: true});
   compress_images(
-    // 'public/images/estates/uncompressed/*.{jpg,JPG,jpeg,JPEG}',
-    // 'public/images/estates/compressed/',
     inDir,
     outDir,
     {compress_force: false, statistic: true, autoupdate: true},

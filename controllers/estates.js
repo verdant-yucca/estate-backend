@@ -4,7 +4,7 @@ const NotFoundError = require('../errors/NotFoundError');
 const BadRequestError = require('../errors/BadRequestError');
 const {
   ERROR_BED_REQUEST,
-  ERROR_NOT_FOUND, baseUrlImageEstate, dirCompressedImages
+  ERROR_NOT_FOUND, baseUrlImageEstate, dirCompressedImagesEstate
 } = require('../utils/constants');
 const {cladr} = require("../utils/cladr");
 const {moveFiles} = require("../utils/moveFiles");
@@ -41,7 +41,7 @@ module.exports.createEstate = (req, res, next) => {
         });
         cladr(estate._id, address);
         let dirUncompressedImages = 'public/images/estates/uncompressed/*.{jpg,JPG,jpeg,JPEG}'
-        compressImages(dirUncompressedImages,dirCompressedImages,true);
+        compressImages(dirUncompressedImages,dirCompressedImagesEstate,true);
       })
       .catch((err) => {
         if (err.code === ERROR_BED_REQUEST.code) {

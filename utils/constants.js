@@ -43,5 +43,8 @@ exports.options = (address) => {return {
 exports.imgList = ['.png','.jpg','.jpeg','.gif'];
 
 exports.baseUrlImageEstate = path.join('public','images','estates', 'uncompressed');
-exports.dirCompressedImages = 'public/images/estates/compressed/';
+exports.baseUrlImageContent = path.join('public','images','contents', 'uncompressed');
+exports.dirCompressedImagesEstate = 'public/images/estates/compressed/';
+exports.dirCompressedImagesContent = 'public/images/contents/compressed/';
 exports.buildUrlImageEstate = path.join('public','images','estates', 'compressed');
+exports.buildUrlImageContent = path.join('public','images','contents', 'compressed');

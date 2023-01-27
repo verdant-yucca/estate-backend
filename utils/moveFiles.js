@@ -1,14 +1,12 @@
 const path = require('path');
 const { imgList } = require('../utils/constants');
 const fs = require("fs");
-const chalk = require("chalk");
+// const chalk = require("chalk");
 const {baseUrlImageEstate} = require("./constants");
 
 
-
-
-
 function moveFile(file, outDir){
+  if (!fs.existsSync(outDir)) fs.mkdirSync(outDir, {recursive: true});
   let extName = path.extname(file.name);
   let uploadFile = file.md5+extName;
   let fileName = file.md5;
@@ -25,7 +23,6 @@ function moveFile(file, outDir){
     fs.unlinkSync(file.tempFilePath);
     return [413, "File is too Large"]
   }
-
   // Сохраняем файл
   file.mv(path.join(outDir, uploadFile), (err) => {
     if (err) {
@@ -37,12 +34,7 @@ function moveFile(file, outDir){
 
 module.exports.moveFiles = (inData, outDir) => {
 let images = [200, []];
-
-
-  console.log(chalk.yellow('var "files" keys ', Object.keys(inData)));
-  console.log(chalk.yellow('var "files" values ', Object.values(inData)));
   if (inData.length > 1) {
-    console.log(chalk.yellow('var "files" length ', inData.length));
     inData.forEach((item)=>{
       let res = moveFile(item,outDir);
       if (res[0] === 200 ) {
