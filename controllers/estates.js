@@ -55,24 +55,15 @@ module.exports.createEstate = (req, res, next) => {
 
 module.exports.getEstates = (req, res, next) => {
   let query = {};
+  let fields = {title: 1, price: 1, views: 1 , images: 1, address: 1, createDate: 1, _id: 1};
   const perPage = 20;
-  const { page = 1 } = req.params;
+  const { page = 0 } = req.body;
 
   // if (req.params) {
   //   let str = req.params.1 + req.params.1 + req.params.1 + req.params.1;
   // }
-  Estate.find(query).skip(page*perPage).limit(perPage)
-    .then((estates) => res.send({
-      estate: {
-        title: estates.title,
-        price: estates.price,
-        views: estates.views.length(),
-        images: estates.images,
-        address: estates.address,
-        createDate: estates.createDate,
-        _id: estates._id,
-      },
-    }))
+  Estate.find(query, fields).skip(page*perPage).limit(perPage)
+    .then((estates) => res.send(estates))
     .catch(next);
 };
 
