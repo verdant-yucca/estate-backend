@@ -55,10 +55,13 @@ module.exports.createEstate = (req, res, next) => {
 
 module.exports.getEstates = (req, res, next) => {
   let query = {};
+  const perPage = 20;
+  const { page = 1 } = req.params;
+
   // if (req.params) {
   //   let str = req.params.1 + req.params.1 + req.params.1 + req.params.1;
   // }
-  Estate.find(query)
+  Estate.find(query).skip(page*perPage).limit(perPage)
     .then((estates) => res.send({
       estate: {
         title: estates.title,
