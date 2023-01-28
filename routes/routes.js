@@ -14,17 +14,17 @@ router.post('/signin', loginValidation, login);
 router.post('/signup', createUserValidation, createUser);
 
 router.use(estateRouter);
-router.use('/transfer', telegramRouter);
-
-router.use('/images/estate', express.static(buildUrlImageEstate))
-router.use('/images/content', express.static(buildUrlImageContent))
-
-router.use(auth);
 router.use(contentRouter);
 
+router.use('/transfer', telegramRouter);
+router.use('/images/estate', express.static(buildUrlImageEstate))
+
+router.use('/images/content', express.static(buildUrlImageContent))
+router.use(auth);
+router.use('/checkAuth', (req, res) => {res.sendStatus(200);})
+
 router.use(usersRouter);
-router.use('/*', () => {
-  throw new NotFoundError('Страница по указанному маршруту не найдена');
+router.use('/*', () => {throw new NotFoundError('Страница по указанному маршруту не найдена');
 });
 
 module.exports = router;

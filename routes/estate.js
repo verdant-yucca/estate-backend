@@ -1,8 +1,9 @@
 const estateRouter = require('express').Router();
+const auth = require("../middlewares/auth");
+
 const {
   estateIdValidation, createEstateValidation,
 } = require('../middlewares/validatons');
-
 const {
   createEstate,
   getEstates,
@@ -11,9 +12,10 @@ const {
   deleteEstate,
 } = require('../controllers/estates');
 //createEstateValidation
-estateRouter.post('/estate', createEstate);
 estateRouter.get('/estate', getEstates);
 estateRouter.get('/estate/:estateId', estateIdValidation, getEstate);
+estateRouter.use(auth);
+estateRouter.post('/estate', createEstateValidation, createEstate);
 estateRouter.patch('/estate', updateEstate);
 estateRouter.delete('/estate/:estateId', estateIdValidation, deleteEstate);
 
