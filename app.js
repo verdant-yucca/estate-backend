@@ -7,7 +7,9 @@ const bodyParser = require('body-parser');
 const cors = require('./middlewares/cors');
 const centralizedError = require('./middlewares/centralizedError');
 const { requestLogger, errorLogger } = require('./middlewares/logger');
-const router = require('./routes/routes');
+const routerNoneAuth = require('./routes/noneAuth/routes');
+const routerWithAuth = require('./routes/withAuth/routes');
+const auth = require("./middlewares/auth");
 
 const { PORT = 3000 } = process.env;
 const app = express();
@@ -23,7 +25,9 @@ app.use(fileUpload({
   tempFileDir : 'tmp',
 }));
 
-app.use(router);
+app.use(routerNoneAuth);
+app.use(auth);
+app.use(routerWithAuth);
 
 app.use(errorLogger);
 app.use(errors());
