@@ -13,13 +13,10 @@ module.exports.compressImages = (inDir, outDir, deletedSourcesFiles) => {
     {svg: {engine: false, command: false}},
     {gif: {engine: false, command: false}},
     function (err, completed, statistic) {
-      console.log(statistic.input);
-      console.log('completed= ', completed);
-
       if (!err && deletedSourcesFiles) {
-
+          //TODO тут валится в ошибку на statistic.input если такой файл уже сжат
           fs.rmSync(statistic.input,  {recursive: true, retryDelay: 200});
-            }
+      }
     }
   );
 };
