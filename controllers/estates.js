@@ -24,6 +24,7 @@ module.exports.createEstate = (req, res, next) => {
   } else {
     const images = moveFilesResult[1];
     const createDate = Date.now();
+
     Estate.create({
       title, price, address, images, target, createDate
     })
@@ -33,13 +34,14 @@ module.exports.createEstate = (req, res, next) => {
             title: estate.title,
             price: estate.price,
             images: estate.images,
-            views: estate.views.length(),
+            views: estate.views,
             address: estate.address,
             createDate: estate.createDate,
             _id: estate._id,
           },
         });
-        cladr(estate._id, address);
+        //cladr(estate._id, address);
+
         let dirUncompressedImages = 'public/images/estates/uncompressed/*.{jpg,JPG,jpeg,JPEG}'
         compressImages(dirUncompressedImages,dirCompressedImagesEstate,true);
       })

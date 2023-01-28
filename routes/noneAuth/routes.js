@@ -15,11 +15,8 @@ routerNoneAuth.use(estateRouter);
 routerNoneAuth.use(contentRouter);
 
 routerNoneAuth.use('/transfer', telegramRouter);
-routerNoneAuth.use('/images/estate', express.static(buildUrlImageEstate))
+routerNoneAuth.use('/images/estate', express.static(buildUrlImageEstate));
 
-routerNoneAuth.use('/images/content', express.static(buildUrlImageContent))
-
-routerNoneAuth.use('/*', () => {throw new NotFoundError('Страница по указанному маршруту не найдена');
-});
+routerNoneAuth.use('/images/content', express.static(buildUrlImageContent));
 
 module.exports = routerNoneAuth;

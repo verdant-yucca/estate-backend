@@ -59,10 +59,7 @@ module.exports.createEstateValidation = celebrate({
     title: Joi.string().required().min(vldEstate.minLenTitle).max(vldEstate.maxLenTitle),
     price: Joi.number().required(),
     address: Joi.string().required(),
-    image: Joi.string().required()
-      .regex(
-        /^((http|https):\/\/)?(www\.)?([a-zа-я0-9]{1}[a-zа-я0-9-\\]*\.?)*\.{1}[a-zа-я0-9-]{2,8}(\w-\.~:\/?#\[\]@!$&'\(\)*\+,;=)?/i,
-      ),
+    images: Joi.array(),
     target: Joi.boolean(),
   }),
 });

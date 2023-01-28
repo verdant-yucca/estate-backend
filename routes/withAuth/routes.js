@@ -5,9 +5,12 @@ const contentRouter = require('./content');
 
 //TODO отправлять email в checkAuth
 
-routerWithAuth.use('/checkAuth', (req, res) => {res.sendStatus(200)})
+routerWithAuth.use('/checkAuth', (req, res) => {res.sendStatus(200);})
 routerWithAuth.use(estateRouter);
 routerWithAuth.use(contentRouter);
 routerWithAuth.use(usersRouter);
+
+routerWithAuth.use('/*', () => {throw new NotFoundError('Страница по указанному маршруту не найдена');
+});
 
 module.exports = routerWithAuth;
