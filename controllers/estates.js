@@ -64,7 +64,7 @@ module.exports.getEstates = (req, res, next) => {
   // if (req.params) {
   //   let str = req.params.1 + req.params.1 + req.params.1 + req.params.1;
   // }
-  Estate.find(query, fields).skip(page*perPage).limit(perPage)
+  Estate.find(query, fields).sort({"_id": -1}).skip(page*perPage).limit(perPage)
     .then((estates) => res.send(estates))
     .catch(next);
 };
@@ -78,7 +78,7 @@ module.exports.getEstate = (req, res, next) => {
         const clientIP = req.headers["x-forwarded-for"];
 
 
-        res.send(estate['views']);
+        res.send(estate);
 
         if (viewsEstate.length > 0) {
           viewsEstate.forEach(item => (item === clientIP) ? (isContains = true) : false);
