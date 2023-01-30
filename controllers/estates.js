@@ -57,15 +57,31 @@ module.exports.createEstate = (req, res, next) => {
 
 module.exports.getEstates = (req, res, next) => {
   let query = {};
-  let fields = {title: 1, price: 1, views: 1 , images: 1, address: 1, createDate: 1, _id: 1};
+  let fields = {title: 1, price: 1, views: 1, images: 1, address: 1, createDate: 1, _id: 1};
   const perPage = 20;
   const { page = 0 } = req.body;
+
 
   // if (req.params) {
   //   let str = req.params.1 + req.params.1 + req.params.1 + req.params.1;
   // }
   Estate.find(query, fields).sort({"_id": -1}).skip(page*perPage).limit(perPage)
-    .then((estates) => res.send(estates))
+    .then((estates) => {
+      const newEstates = estates.map(estate=>{
+        const newEstate = {
+          'title': estate.title,
+          'price': estate.price,
+          'views': estate.views.length,
+          'images': estate.images,
+          'address': estate.address,
+          'createDate': estate.createDate,
+          '_id': estate._id
+        };
+         return newEstate;
+      })
+      res.send(newEstates);
+    })
+
     .catch(next);
 };
 
