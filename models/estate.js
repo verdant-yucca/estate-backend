@@ -1,5 +1,5 @@
 const mongoose = require('mongoose');
-const isBoolean = require("validator/es/lib/isBoolean");
+//const isBoolean = require("validator/es/lib/isBoolean");
 
 const estateSchema = new mongoose.Schema({
   title: {
