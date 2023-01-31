@@ -89,12 +89,22 @@ module.exports.getEstate = (req, res, next) => {
   Estate.findById(req.params.estateId)
     .then((estate) => {
       if (estate) {
+        // отправляем пользователю ответ
+        const newEstate = {
+          'title': estate.title,
+          'price': estate.price,
+          'views': estate.views.length,
+          'images': estate.images,
+          'address': estate.address,
+          'createDate': estate.createDate,
+          '_id': estate._id
+        };
+        res.send(newEstate);
+
+        // добавляем ip юзера в бд
         let isContains = false;
         const viewsEstate = estate['views'];
         const clientIP = req.headers["x-forwarded-for"];
-
-
-        res.send(estate);
 
         if (viewsEstate.length > 0) {
           viewsEstate.forEach(item => (item === clientIP) ? (isContains = true) : false);
