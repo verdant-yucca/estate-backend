@@ -15,7 +15,6 @@ const { PORT = 3000 } = process.env;
 const app = express();
 
 mongoose.connect('mongodb://127.0.0.1:27017/estate'); // localhost || 127.0.0.1
-
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: true }));
 app.use(requestLogger);
@@ -27,6 +26,7 @@ app.use(fileUpload({
 
 app.use(routerNoneAuth);
 app.use(auth);
+
 app.use(routerWithAuth);
 
 app.use(errorLogger);

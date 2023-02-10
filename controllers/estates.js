@@ -11,6 +11,10 @@ const {moveFiles} = require("../utils/moveFiles");
 const {compressImages} = require("../utils/imageUtils");
 
 module.exports.createEstate = (req, res, next) => {
+  console.log('req.body =',req.body);
+  console.log('req.files =',req.files);
+  console.log('req.values =',Array.from(Object.values(req.files)));
+
   const {
     title, price, address, target,
   } = req.body;
@@ -18,7 +22,8 @@ module.exports.createEstate = (req, res, next) => {
   if (!req.files || Object.keys(req.files).length === 0) {
     return res.status(400).send('No files were uploaded.');
   }
-  const moveFilesResult = moveFiles(req.files.images, baseUrlImageEstate);
+  //const moveFilesResult = moveFiles(req.files, baseUrlImageEstate); //.images
+  const moveFilesResult = moveFiles(Array.from(Object.values(req.files)), baseUrlImageEstate); //.images
   if (moveFilesResult[0] !== 200){
     res.status(moveFilesResult[0]).send(moveFilesResult[1]);
   } else {
@@ -34,7 +39,7 @@ module.exports.createEstate = (req, res, next) => {
             title: estate.title,
             price: estate.price,
             images: estate.images,
-            views: estate.views,
+            views: 0,
             address: estate.address,
             createDate: estate.createDate,
             _id: estate._id,
@@ -68,7 +73,7 @@ module.exports.getEstates = (req, res, next) => {
   Estate.find(query, fields).sort({"_id": -1}).skip(page*perPage).limit(perPage)
     .then((estates) => {
       const newEstates = estates.map(estate=>{
-        const newEstate = {
+        return {
           'title': estate.title,
           'price': estate.price,
           'views': estate.views.length,
@@ -76,8 +81,7 @@ module.exports.getEstates = (req, res, next) => {
           'address': estate.address,
           'createDate': estate.createDate,
           '_id': estate._id
-        };
-         return newEstate;
+        }
       })
       res.send(newEstates);
     })

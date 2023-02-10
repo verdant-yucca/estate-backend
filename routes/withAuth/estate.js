@@ -6,7 +6,7 @@ const {
   deleteEstate,
 } = require('../../controllers/estates');
 
-estateRouter.post('/estate', createEstate); //createEstateValidation, 
+estateRouter.post('/estate', createEstate); //createEstateValidation,
 estateRouter.patch('/estate', updateEstate);
 estateRouter.delete('/estate/:estateId', estateIdValidation, deleteEstate);
 

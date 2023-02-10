@@ -34,7 +34,7 @@ function moveFile(file, outDir){
 
 module.exports.moveFiles = (inData, outDir) => {
 let images = [200, []];
-  if (inData.length > 1) {
+  if (inData.length > 0) {
     inData.forEach((item)=>{
       let res = moveFile(item,outDir);
       if (res[0] === 200 ) {
