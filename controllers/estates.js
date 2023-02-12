@@ -84,16 +84,16 @@ module.exports.getEstates = (req, res, next) => {
         }
 
         if (estate.apartment) {
-          obj.append('apartment', estate.apartment)
+          obj.apartment = estate.apartment;
         }
         if (estate.office) {
-          obj.append('office', estate.office)
+          obj.office = estate.office;
         }
         if (estate.home) {
-          obj.append('home', estate.home)
+          obj.home = estate.home;
         }
 
-        return obj
+        return obj;
       })
       res.send(newEstates);
     })
