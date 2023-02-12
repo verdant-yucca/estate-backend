@@ -73,7 +73,7 @@ module.exports.getEstates = (req, res, next) => {
   Estate.find(query, fields).sort({"_id": -1}).skip(page*perPage).limit(perPage)
     .then((estates) => {
       const newEstates = estates.map(estate=>{
-        return {
+        const obj = {
           'title': estate.title,
           'price': estate.price,
           'views': estate.views.length,
@@ -82,6 +82,18 @@ module.exports.getEstates = (req, res, next) => {
           'createDate': estate.createDate,
           '_id': estate._id
         }
+
+        if (estate.apartment) {
+          obj.append('apartment', estate.apartment)
+        }
+        if (estate.office) {
+          obj.append('office', estate.office)
+        }
+        if (estate.home) {
+          obj.append('home', estate.home)
+        }
+
+        return obj
       })
       res.send(newEstates);
     })

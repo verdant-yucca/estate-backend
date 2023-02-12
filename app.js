@@ -11,7 +11,7 @@ const routerNoneAuth = require('./routes/noneAuth/routes');
 const routerWithAuth = require('./routes/withAuth/routes');
 const auth = require("./middlewares/auth");
 
-const { PORT = 3000 } = process.env;
+const { PORT = 3000} = process.env;
 const app = express();
 
 mongoose.connect('mongodb://127.0.0.1:27017/estate'); // localhost || 127.0.0.1
