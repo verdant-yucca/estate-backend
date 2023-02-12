@@ -60,5 +60,7 @@ const estateSchema = new mongoose.Schema({
       type: String
     },
   },
+  office: {},
+  home: {},
 });
 module.exports = mongoose.model('estate', estateSchema);

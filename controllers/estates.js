@@ -62,7 +62,7 @@ module.exports.createEstate = (req, res, next) => {
 
 module.exports.getEstates = (req, res, next) => {
   let query = {};
-  let fields = {title: 1, price: 1, views: 1, images: 1, address: 1, createDate: 1, _id: 1};
+  let fields = {title: 1, price: 1, views: 1, images: 1, address: 1, apartment: 1, office: 1, home: 1, createDate: 1, _id: 1};
   const perPage = 20;
   const { page = 0 } = req.body;
 
@@ -82,14 +82,15 @@ module.exports.getEstates = (req, res, next) => {
           'createDate': estate.createDate,
           '_id': estate._id
         }
-
-        if (estate.apartment) {
+        let estateString = JSON.stringify(estate)
+        let estateJSON = JSON.parse(estateString)
+        if (estateJSON.apartment) {
           obj.apartment = estate.apartment;
         }
-        if (estate.office) {
+        if (estateJSON.office) {
           obj.office = estate.office;
         }
-        if (estate.home) {
+        if (estateJSON.home) {
           obj.home = estate.home;
         }
 
