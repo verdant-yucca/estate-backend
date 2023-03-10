@@ -11,10 +11,6 @@ const {moveFiles} = require("../utils/moveFiles");
 const {compressImages} = require("../utils/imageUtils");
 
 module.exports.createEstate = (req, res, next) => {
-  console.log('req.body =',req.body);
-  console.log('req.files =',req.files);
-  console.log('req.values =',Array.from(Object.values(req.files)));
-
   const {
     title, price, address, target,
   } = req.body;
@@ -31,7 +27,20 @@ module.exports.createEstate = (req, res, next) => {
     const createDate = Date.now();
 
     Estate.create({
-      title, price, address, images, target, createDate
+      title, price, address, images, target, createDate,
+      apartment: {
+        floor: req.body.apartment.floor?req.body.apartment.floor:"",
+        status: req.body.apartment.status?req.body.apartment.status:"",
+        rooms: req.body.apartment.rooms?req.body.apartment.rooms:"",
+        square: req.body.apartment.square?req.body.apartment.square:"",
+        kitchen_square: req.body.apartment.kitchen_square?req.body.apartment.kitchen_square:"",
+        living_space: req.body.apartment.living_space?req.body.apartment.living_space:"",
+        total_floors: req.body.apartment.total_floors?req.body.apartment.total_floors:"",
+        height: req.body.apartment.height?req.body.apartment.height:"",
+        bathroom: req.body.apartment.bathroom?req.body.apartment.bathroom:"",
+        repair: req.body.apartment.repair?req.body.apartment.repair:"",
+        furniture: req.body.apartment.furniture?req.body.apartment.furniture:""
+      }
     })
       .then((estate) => {
         res.send({
@@ -42,6 +51,7 @@ module.exports.createEstate = (req, res, next) => {
             views: 0,
             address: estate.address,
             createDate: estate.createDate,
+            apartment: estate.apartment,
             _id: estate._id,
           },
         });
@@ -114,6 +124,8 @@ module.exports.getEstate = (req, res, next) => {
           'images': estate.images,
           'address': estate.address,
           'createDate': estate.createDate,
+          'info': estate.info,
+          'apartment': estate.apartment,
           '_id': estate._id
         };
         res.send(newEstate);

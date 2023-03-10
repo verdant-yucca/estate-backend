@@ -16,6 +16,9 @@ const estateSchema = new mongoose.Schema({
     type: String,
     required: true,
   },
+  info: {
+    type: String,
+  },
   createDate: {
     type: Date,
   },
