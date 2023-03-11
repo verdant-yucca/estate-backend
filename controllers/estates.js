@@ -96,7 +96,8 @@ module.exports.getEstates = (req, res, next) => {
   let query = {};
   let fields = {title: 1, price: 1, views: 1, images: 1, address: 1, apartment: 1, office: 1, home: 1, createDate: 1, _id: 1};
   const perPage = 20;
-  const page = req.params.page ? req.params.page : 0;
+  const page = req.query.page ? req.query.page : 0;
+  console.log(page)
 
 
   // if (req.params) {
