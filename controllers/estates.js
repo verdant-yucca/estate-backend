@@ -12,8 +12,43 @@ const {compressImages} = require("../utils/imageUtils");
 
 module.exports.createEstate = (req, res, next) => {
   const {
-    title, price, address, target,
+    title, price, address, target, info
   } = req.body;
+  const apartment = {};
+  if (req.body.floor) {
+    apartment.floor = req.body.floor;
+  }
+  if (req.body.status) {
+    apartment.status = req.body.status;
+  }
+  if (req.body.rooms) {
+    apartment.rooms = req.body.rooms;
+  }
+  if (req.body.square) {
+    apartment.square = req.body.square;
+  }
+  if (req.body.kitchen_square) {
+    apartment.kitchen_square = req.body.kitchen_square;
+  }
+  if (req.body.living_space) {
+    apartment.living_space = req.body.living_space;
+  }
+  if (req.body.total_floors) {
+    apartment.total_floors = req.body.total_floors;
+  }
+  if (req.body.height) {
+    apartment.height = req.body.height;
+  }
+  if (req.body.bathroom) {
+    apartment.bathroom = req.body.bathroom;
+  }
+  if (req.body.repair) {
+    apartment.repair = req.body.repair;
+  }
+  if (req.body.furniture) {
+    apartment.furniture = req.body.furniture;
+  }
+
   // проверка запроса на наличие файлов и наименование ключей
   if (!req.files || Object.keys(req.files).length === 0) {
     return res.status(400).send('No files were uploaded.');
@@ -27,20 +62,7 @@ module.exports.createEstate = (req, res, next) => {
     const createDate = Date.now();
 
     Estate.create({
-      title, price, address, images, target, createDate,
-      apartment: {
-        floor: req.body.apartment.floor?req.body.apartment.floor:"",
-        status: req.body.apartment.status?req.body.apartment.status:"",
-        rooms: req.body.apartment.rooms?req.body.apartment.rooms:"",
-        square: req.body.apartment.square?req.body.apartment.square:"",
-        kitchen_square: req.body.apartment.kitchen_square?req.body.apartment.kitchen_square:"",
-        living_space: req.body.apartment.living_space?req.body.apartment.living_space:"",
-        total_floors: req.body.apartment.total_floors?req.body.apartment.total_floors:"",
-        height: req.body.apartment.height?req.body.apartment.height:"",
-        bathroom: req.body.apartment.bathroom?req.body.apartment.bathroom:"",
-        repair: req.body.apartment.repair?req.body.apartment.repair:"",
-        furniture: req.body.apartment.furniture?req.body.apartment.furniture:""
-      }
+      title, price, address, images, target, createDate, apartment, info
     })
       .then((estate) => {
         res.send({
