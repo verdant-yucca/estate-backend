@@ -10,23 +10,26 @@ const estateSchema = new mongoose.Schema({
   },
   price: {
     type: Number,
-    required: true,
+    required: true
   },
   address: {
     type: String,
-    required: true,
+    required: true
   },
   info: {
-    type: String,
+    type: String
   },
   createDate: {
-    type: Date,
+    type: Date
   },
   images: [],
   views: [],
   coords: [],
   target: {
-    type: Boolean,
+    type: Boolean
+  },
+  typeEstate: {
+    type: String
   },
   apartment: {
     floor: {
@@ -63,7 +66,66 @@ const estateSchema = new mongoose.Schema({
       type: String
     },
   },
-  office: {},
-  home: {},
+  office: {
+    floor: {
+      type: Number
+    },
+    square: {
+      type: Number
+    },
+    power_grid_capacity: {
+      type: Number
+    },
+    purpose: {
+      type: String
+    },
+    room_layout: {
+      type: String
+    },
+    heating: {
+      type: String
+    },
+    separate_entrance: {
+      type: Boolean
+    }
+  },
+  home: {
+    rooms: {
+      type: Number
+    },
+    square: {
+      type: Number
+    },
+    plot_area: {
+      type: Number
+    },
+    house_floors: {
+      type: Number
+    },
+    year_built: {
+      type: Number
+    },
+    land_category: {
+      type: String
+    },
+    wall_material: {
+      type: String
+    },
+    heating: {
+      type: String
+    },
+    toilet: {
+      type: String
+    },
+    Repair: {
+      type: String
+    },
+    water_supply: {
+      type: String
+    },
+    electricity: {
+      type: Boolean
+    }
+  },
 });
 module.exports = mongoose.model('estate', estateSchema);
