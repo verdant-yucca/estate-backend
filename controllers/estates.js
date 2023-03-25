@@ -96,7 +96,14 @@ module.exports.createEstate = (req, res, next) => {
 };
 
 module.exports.getEstates = (req, res, next) => {
-  let query = {};
+  // const {
+  //   price
+  // } = req.query
+  // if (price)
+  let query = req.query;
+  // console.log(query)
+
+  // if (target) query.append(target: target)
   let fields = {title: 1, price: 1, views: 1, images: 1,  typeEstate: 1, address: 1, target:1, apartment: 1, office: 1, home: 1, createDate: 1, _id: 1};
   const perPage = 20;
   const page = req.query.page ? req.query.page : 0;
