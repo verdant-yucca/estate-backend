@@ -97,7 +97,7 @@ const estateSchema = new mongoose.Schema({
       type: Number
     },
     year_built: {
-      type: Date
+      type: Number
     },
     land_category: {
       type: String
