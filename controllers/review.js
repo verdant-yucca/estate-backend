@@ -31,7 +31,7 @@ module.exports.getReviews = (req, res, next) => {
 }
 
 module.exports.deleteReviews = (req, res, next) => {
-  Estate.findByIdAndRemove(req.params.reviewId)
+  Review.findByIdAndRemove(req.params.reviewId)
     .then((review) => {
       res.send({ review });
     })
