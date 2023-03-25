@@ -67,25 +67,25 @@ const estateSchema = new mongoose.Schema({
     },
   },
   office: {
-    floor: {
+    floor: { // Этаж на котором находится помещение
       type: Number
     },
-    square: {
+    square: { // Площадь
       type: Number
     },
-    power_grid_capacity: {
+    power_grid_capacity: { // Максимальная нагрузка сети
       type: Number
     },
-    purpose: {
+    purpose: { // Назначение помещения
       type: String
     },
-    room_layout: {
+    room_layout: { // Планировка
       type: String
     },
-    heating: {
+    heating: { // Отопление
       type: String
     },
-    separate_entrance: {
+    separate_entrance: { // Отдельный вход
       type: Boolean
     }
   },
@@ -103,7 +103,7 @@ const estateSchema = new mongoose.Schema({
       type: Number
     },
     year_built: {
-      type: Number
+      type: Date
     },
     land_category: {
       type: String

@@ -75,6 +75,7 @@ module.exports.createEstate = (req, res, next) => {
           typeEstate: estate.typeEstate,
           views: 0,
           address: estate.address,
+          target: estate.target,
           createDate: estate.createDate,
           _id: estate._id,
         };
@@ -96,7 +97,7 @@ module.exports.createEstate = (req, res, next) => {
 
 module.exports.getEstates = (req, res, next) => {
   let query = {};
-  let fields = {title: 1, price: 1, views: 1, images: 1,  typeEstate: 1, address: 1, apartment: 1, office: 1, home: 1, createDate: 1, _id: 1};
+  let fields = {title: 1, price: 1, views: 1, images: 1,  typeEstate: 1, address: 1, target:1, apartment: 1, office: 1, home: 1, createDate: 1, _id: 1};
   const perPage = 20;
   const page = req.query.page ? req.query.page : 0;
 
@@ -109,6 +110,7 @@ module.exports.getEstates = (req, res, next) => {
           'views': estate.views.length,
           'images': estate.images,
           'address': estate.address,
+          'target': estate.target,
           'typeEstate': estate.typeEstate,
           'createDate': estate.createDate,
           '_id': estate._id
@@ -175,13 +177,16 @@ module.exports.getEstate = (req, res, next) => {
 };
 
 module.exports.updateEstate = (req, res, next) => {
+  // TODO: Дописать функцию обновления данных
   const {
-    title, price, address, image, target,
+    title, price, address, info, image, target, typeEstate,
+    apartment, office, home
   } = req.body;
   Estate.findByIdAndUpdate(
     req.estate._id,
     {
-      title, price, address, image, target,
+      title, price, address, info, image, target, typeEstate,
+      apartment, office, home
     },
     {
       new: true,
