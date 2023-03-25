@@ -16,6 +16,9 @@ const estateSchema = new mongoose.Schema({
     type: String,
     required: true
   },
+  square: {
+    type: Number
+  },
   info: {
     type: String
   },
@@ -39,9 +42,6 @@ const estateSchema = new mongoose.Schema({
       type: String
     },
     rooms: {
-      type: Number
-    },
-    square: {
       type: Number
     },
     kitchen_square: {
@@ -70,9 +70,6 @@ const estateSchema = new mongoose.Schema({
     floor: { // Этаж на котором находится помещение
       type: Number
     },
-    square: { // Площадь
-      type: Number
-    },
     power_grid_capacity: { // Максимальная нагрузка сети
       type: Number
     },
@@ -91,9 +88,6 @@ const estateSchema = new mongoose.Schema({
   },
   home: {
     rooms: {
-      type: Number
-    },
-    square: {
       type: Number
     },
     plot_area: {

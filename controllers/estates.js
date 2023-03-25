@@ -12,7 +12,7 @@ const {compressImages} = require("../utils/imageUtils");
 
 module.exports.createEstate = (req, res, next) => {
   const {
-    title, price, address, target, info, typeEstate
+    title, price, address, square, target, info, typeEstate
   } = req.body;
 
   const apartment = {};
@@ -23,7 +23,6 @@ module.exports.createEstate = (req, res, next) => {
     if (req.body.floor) {apartment.floor = req.body.floor;}
     if (req.body.status) {apartment.status = req.body.status;}
     if (req.body.rooms) {apartment.rooms = req.body.rooms;}
-    if (req.body.square) {apartment.square = req.body.square;}
     if (req.body.kitchen_square) {apartment.kitchen_square = req.body.kitchen_square;}
     if (req.body.living_space) {apartment.living_space = req.body.living_space;}
     if (req.body.total_floors) {apartment.total_floors = req.body.total_floors;}
@@ -33,7 +32,6 @@ module.exports.createEstate = (req, res, next) => {
     if (req.body.furniture) {apartment.furniture = req.body.furniture;}
   } else if (typeEstate==="office") {
     if (req.body.floor) {office.floor = req.body.floor;}
-    if (req.body.square) {office.floor = req.body.square;}
     if (req.body.power_grid_capacity) {office.power_grid_capacity = req.body.power_grid_capacity;}
     if (req.body.purpose) {office.purpose = req.body.purpose;}
     if (req.body.room_layout) {office.room_layout = req.body.room_layout;}
@@ -41,7 +39,6 @@ module.exports.createEstate = (req, res, next) => {
     if (req.body.separate_entrance) {office.separate_entrance = req.body.separate_entrance;}
   } else if (typeEstate==="home") {
     if (req.body.rooms) {home.rooms = req.body.rooms;}
-    if (req.body.square) {home.square = req.body.square;}
     if (req.body.plot_area) {home.plot_area = req.body.plot_area;}
     if (req.body.house_floors) {home.house_floors = req.body.house_floors;}
     if (req.body.year_built) {home.year_built = req.body.year_built;}
@@ -65,7 +62,7 @@ module.exports.createEstate = (req, res, next) => {
     const images = moveFilesResult[1];
     const createDate = Date.now();
     Estate.create({
-      title, price, address, images, target, createDate, apartment, office, home, info, typeEstate
+      title, price, address, square, images, target, createDate, apartment, office, home, info, typeEstate
     })
       .then((estate) => {
         const obj = {
@@ -75,6 +72,7 @@ module.exports.createEstate = (req, res, next) => {
           typeEstate: estate.typeEstate,
           views: 0,
           address: estate.address,
+          square: estate.square,
           target: estate.target,
           createDate: estate.createDate,
           _id: estate._id,
@@ -140,6 +138,7 @@ module.exports.getEstate = (req, res, next) => {
           'views': estate.views.length,
           'images': estate.images,
           'address': estate.address,
+          'square': estate.square,
           'createDate': estate.createDate,
           'info': estate.info,
           'typeEstate': estate.typeEstate,
