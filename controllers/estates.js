@@ -36,6 +36,7 @@ module.exports.createEstate = (req, res, next) => {
     if (req.body.purpose) {office.purpose = req.body.purpose;}
     if (req.body.room_layout) {office.room_layout = req.body.room_layout;}
     if (req.body.heating) {office.heating = req.body.heating;}
+    // TODO: починить запись в базу поля separate_entrance
     if (req.body.separate_entrance===true || req.body.separate_entrance===false) {office.separate_entrance = req.body.separate_entrance;}
   } else if (typeEstate==="home") {
     if (req.body.rooms) {home.rooms = req.body.rooms;}
@@ -48,6 +49,7 @@ module.exports.createEstate = (req, res, next) => {
     if (req.body.toilet) {home.toilet = req.body.toilet;}
     if (req.body.repair) {home.repair = req.body.repair;}
     if (req.body.water_supply) {home.water_supply = req.body.water_supply;}
+    // TODO: починить запись в базу поля electricity
     if (req.body.electricity===true || req.body.electricity===false) {home.electricity = req.body.electricity;}
   }
   // проверка запроса на наличие файлов и наименование ключей

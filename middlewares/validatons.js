@@ -53,6 +53,11 @@ module.exports.contentIdValidation = celebrate({
     contentId: Joi.string().required().length(24).hex(),
   }),
 });
+module.exports.reviewIdValidation = celebrate({
+  params: Joi.object().keys({
+    reviewId: Joi.string().required().length(24).hex(),
+  }),
+});
 
 module.exports.createEstateValidation = celebrate({
   body: Joi.object().keys({
